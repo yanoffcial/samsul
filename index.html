@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 15th, Samsul! 🌠</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #050914;
+            --bg-mid: #0f172a;
+            --accent-gold: #fbbf24;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-mid) 100%);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+
+        /* --- ANIMASI BINTANG LATAR BELAKANG --- */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: twinkle var(--duration) infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- ANIMASI BINTANG JATUH --- */
+        .shooting-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+            animation: shoot 4s linear infinite;
+            opacity: 0;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,1), transparent);
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg); opacity: 0; }
+        }
+
+        .shooting-star:nth-child(1) { top: 10%; left: 80%; animation-delay: 0s; animation-duration: 3s; }
+        .shooting-star:nth-child(2) { top: 30%; left: 100%; animation-delay: 2s; animation-duration: 4s; }
+        .shooting-star:nth-child(3) { top: 5%; left: 50%; animation-delay: 5s; animation-duration: 5s; }
+        .shooting-star:nth-child(4) { top: 40%; left: 90%; animation-delay: 7s; animation-duration: 3.5s; }
+
+        /* --- LAYAR PEMBUKA (COVER) --- */
+        #cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #050914;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .moon-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #cover h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #cover p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .btn-open {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--accent-gold);
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .btn-open:hover {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .slide-down {
+            transform: translateY(100vh);
+        }
+
+        /* --- KONTEN UTAMA --- */
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--accent-gold);
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .prayer-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px 25px;
+            border-radius: 16px;
+            margin: 45px 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .prayer-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--accent-gold);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .prayer-box p {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* --- BAGIAN SURPRISE --- */
+        .surprise-section {
+            margin-top: 60px;
+            padding-bottom: 50px;
+        }
+
+        .btn-surprise {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-surprise:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+        }
+
+        #secret-message {
+            display: none;
+            margin-top: 40px;
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px dashed var(--accent-gold);
+            padding: 35px 25px;
+            border-radius: 16px;
+            animation: fadeUp 1s ease-out forwards;
+        }
+
+        #secret-message p {
+            color: var(--text-main);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        #secret-message .highlight-text {
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        #secret-message .signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--accent-gold);
+            font-style: italic;
+            margin-top: 25px;
+            text-align: right;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            #cover h1 { font-size: 2rem; }
+            h2 { font-size: 1.8rem; }
+            p { font-size: 1rem; }
+            .container { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Latar Belakang Bintang -->
+    <div class="stars-container">
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <!-- LAYAR PEMBUKA -->
+    <div id="cover">
+        <div class="moon-icon">🌙</div>
+        <h1>Untuk Samsul...</h1>
+        <p>Ada pesan kecil di balik langit malam ini.</p>
+        <button class="btn-open" onclick="openGift()">Buka Pesan</button>
+    </div>
+
+    <!-- KONTEN -->
+    <div class="container">
+        
+        <div class="fade-in">
+            <h2>Selamat Ulang Tahun ke-15, Samsul! 🌟</h2>
+            <p>Gak kerasa ya, sekarang kamu udah <span class="highlight">15 tahun</span>. Masa-masa paling seru, penuh energi, dan pastinya banyak hal baru yang bakal kamu temuin. Semoga di umur yang baru ini, kamu makin asik, makin cool, dan tentunya makin bahagia.</p>
+        </div>
+
+        <div class="fade-in">
+            <p>Jadi anak yang tumbuh dengan baik ya, Sul. Tetap jadi diri kamu sendiri, jangan takut buat mimpi besar, dan kalau lagi ada masalah, inget aja kalau kamu gak pernah sendirian. Nikmatin setiap prosesnya, karena umur 15 itu waktu yang pas buat kamu eksplor banyak hal tanpa beban.</p>
+        </div>
+
+        <div class="fade-in prayer-box">
+            <h3>Doa & Harapan 🤲</h3>
+            <p>"Semoga di umur yang ke-15 ini, Samsul selalu diberikan kesehatan, dilancarkan semua urusannya, baik di sekolah maupun di luar. Semoga dikelilingi oleh orang-orang baik yang selalu support, dijauhkan dari hal-hal yang kurang baik, dan semoga semua cita-cita serta impiannya satu per satu bisa terwujud. Panjang umur, makin berbakti sama orang tua, dan selalu dalam lindungan-Nya."</p>
+        </div>
+
+        <div class="fade-in surprise-section">
+            <h2>Masih ada satu hal lagi... 🎁</h2>
+            <p>Tekan tombol di bawah ini buat buka kejutan terakhirnya.</p>
+            <button class="btn-surprise" onclick="revealSurprise()" id="btnKejutan">Buka Kejutan Spesial!</button>
+            
+            <!-- Pesan Rahasia & Lagu -->
+            <div id="secret-message">
+                <p class="highlight-text">TADAAA! 🎉 (Dengerin lagunya dulu ya...)</p>
+                <p>Jujur, tadinya bingung mau kasih kado apa. Tapi terus kepikiran, mungkin ini yang lebih awet: sebuah pengingat buat kamu.</p>
+                <p>Di umur 15 ini, dunia kamu lagi terbuka lebar, Sul. Jangan pernah minder sama pencapaian orang lain, karena jalan kamu sendiri itu unik dan gak ada yang bisa nandingin. Kalau nanti ada rintangan atau hari-hari yang bikin capek, inget aja momen ini. Ingat kalau kamu punya orang-orang yang selalu dukung kamu dari belakang.</p>
+                <p>Tetap rendah hati, terus belajar, dan jangan pernah berhenti jadi Samsul yang kita semua sayangi. Pokoknya, doa terbaik selalu menyertaimu. <strong>Happy level 15!</strong></p>
+                <p class="signature">- Dari yang selalu support kamu ✨</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AUDIO LAGU ULANG TAHUN -->
+    <!-- File lagu.mp3 harus berada di folder yang sama dengan file HTML ini di GitHub -->
+    <audio id="laguUltah" src="lagu.mp3" preload="auto"></audio>
+
+    <script>
+        // --- 1. Membuat Bintang Latar Belakang ---
+        const starsContainer = document.querySelector('.stars-container');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 2 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            starsContainer.appendChild(star);
+        }
+
+        // --- 2. Fungsi Buka Cover ---
+        function openGift() {
+            document.getElementById('cover').classList.add('slide-down');
+            setTimeout(() => {
+                checkScroll();
+            }, 600);
+        }
+
+        // --- 3. Animasi Fade-In saat Scroll ---
+        function checkScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 60) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+        window.addEventListener('scroll', checkScroll);
+
+        // --- 4. Fungsi Kejutan (Lagu Full + Konfeti) ---
+        function revealSurprise() {
+            document.getElementById('btnKejutan').style.display = 'none';
+            document.getElementById('secret-message').style.display = 'block';
+            
+            // Putar Lagu (Otomatis play karena dipicu klik user)
+            const lagu = document.getElementById('laguUltah');
+            lagu.volume = 0.8; // Volume 80%
+            lagu.play().catch(error => {
+                console.log("Lagu gagal diputar otomatis: ", error);
+                // Fallback jika browser benar-benar memblokir
+                alert("Klik sekali lagi di mana saja di layar untuk memutar lagu.");
+            });
+
+            // Efek Konfeti Berbentuk Bintang
+            var duration = 6 * 1000; // Konfeti turun selama 6 detik
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000, shapes: ['star'], colors: ['#fbbf24', '#ffffff', '#94a3b8'] };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 40 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
