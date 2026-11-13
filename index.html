@@ -346,8 +346,8 @@
     </div>
 
     <!-- AUDIO LAGU ULANG TAHUN -->
-    <!-- File lagu.mp3 harus berada di folder yang sama dengan file HTML ini di GitHub -->
-    <audio id="laguUltah" src="lagu.mp3" preload="auto"></audio>
+    <!-- Sesuai screenshot, file kamu bernama lagu.mp4 -->
+    <audio id="laguUltah" src="lagu.mp4" preload="auto"></audio>
 
     <script>
         // --- 1. Membuat Bintang Latar Belakang ---
@@ -390,13 +390,11 @@
             document.getElementById('btnKejutan').style.display = 'none';
             document.getElementById('secret-message').style.display = 'block';
             
-            // Putar Lagu (Otomatis play karena dipicu klik user)
+            // Putar Lagu
             const lagu = document.getElementById('laguUltah');
             lagu.volume = 0.8; // Volume 80%
             lagu.play().catch(error => {
                 console.log("Lagu gagal diputar otomatis: ", error);
-                // Fallback jika browser benar-benar memblokir
-                alert("Klik sekali lagi di mana saja di layar untuk memutar lagu.");
             });
 
             // Efek Konfeti Berbentuk Bintang
